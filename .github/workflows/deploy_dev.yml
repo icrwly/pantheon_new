@@ -6,7 +6,7 @@ on:
       - 'main'
 
 env:
-  php_version: '7.4'
+  php_version: '8.0'
   pantheon_env: 'dev'
   pantheon_repo: ${{ secrets.PANTHEON_REPO }}
   pantheon_site_name: ${{ secrets.PANTHEON_SITE_NAME }}
@@ -67,7 +67,7 @@ jobs:
           terminus auth:login --machine-token=${{ secrets.PANTHEON_MACHINE_TOKEN }}
       - name: Prepare code for deployment
         run: |
-          git config --global user.email "github-actions@example.com"
+          git config --global user.email "ian.crowley@pantheon.io"
           git config --global user.name "GitHub Actions"
           commit_message=$(git log -1 --pretty=%B)
           rm -rf .git
