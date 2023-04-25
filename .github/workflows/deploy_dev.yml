@@ -19,30 +19,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@c0c6e403b6c6c44657450627093edddf3b905c5b # 2.9.0
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          php-version: ${{ env.php_version }}
-
-      - name: Get Composer cache directory
-        id: composer-cache-dir
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@0781355a23dac32fd3bac414512f4b903437991a # v2.1.3
-        with:
-          path: ${{ steps.composer-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-      - name: Avoid GitHub rate limit for Composer
-        run: composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Composer install
-        run: composer install --no-dev --no-interaction --no-progress
-
       - name: Place SSH key
         uses: shimataro/ssh-key-action@6f350ca8484d8d55c2e361e74d17e638dabe713a # v2.1.0
         with:
