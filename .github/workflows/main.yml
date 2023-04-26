@@ -36,8 +36,8 @@ jobs:
         echo "Github Committer Name $GITHUB_ACTOR" 
         echo "Triggering Branch $GITHUB_REF_NAME"
         git remote add pantheon $pantheon_repo
-        git config --global user.email "ian.crowley@pantheon.io"
-        git config --global user.name "Github Actions"
-        git add .
-        git diff-index --quiet HEAD || git commit -q -m 'Build assets for dev.'
-        git push pantheon HEAD:$GITHUB_REF_NAME
+      #  git config --global user.email "ian.crowley@pantheon.io"
+      #  git config --global user.name "Github Actions"
+       # git add .
+       # git diff-index --quiet HEAD || git commit -q -m 'Build assets for dev.'
+      #  git push pantheon HEAD:$GITHUB_REF_NAME
