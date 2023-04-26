@@ -16,6 +16,8 @@ jobs:
     name: Deploy to Pantheon Dev
     runs-on: ubuntu-latest
     steps:
+       - name: "Say Hello Mona it's Monday"
+            run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
       - name: Checkout repository
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4.1
 
@@ -43,8 +45,6 @@ jobs:
           git config --local gc.auto 0
           git add --force .
           git commit -m "Automated deploy: $commit_message" >/dev/null
-      - name: Print Variables
-          run: echo "$pantheon_site_name $pantheon_env"
       - name: Enable maintenance mode
           run: terminus drush -y $pantheon_site_name.$pantheon_env sset system.maintenance_mode 1
 
