@@ -31,5 +31,5 @@ jobs:
   deploy:
     uses: lastcallmedia/github-actions/.github/workflows/terminus-safe-deploy.yml@main
     secrets:
-      TERMINUS_DOWNSTREAM_SSH_KEY: ${{ secrets.PANTHEON_PRIVATE_SSH_KEY }}
+      TERMINUS_DOWNSTREAM_SSH_KEY: ${{ secrets.PPANTHEON_SSH_KEY }}
       TERMINUS_MACHINE_TOKEN: ${{ secrets.TERMINUS_MACHINE_TOKEN }}
