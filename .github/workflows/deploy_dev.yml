@@ -32,4 +32,4 @@ jobs:
     uses: lastcallmedia/github-actions/.github/workflows/terminus-safe-deploy.yml@main
     secrets:
       TERMINUS_DOWNSTREAM_SSH_KEY: ${{ secrets.PANTHEON_SSH_KEY }}
-      TERMINUS_MACHINE_TOKEN: ${{ secrets.TERMINUS_MACHINE_TOKEN }}
+      TERMINUS_MACHINE_TOKEN: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
