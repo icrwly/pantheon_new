@@ -1,4 +1,4 @@
-name: Deploy to Pantheon
+name: Deploy to Pantheon Platform
 on:
   push:
     branches:
