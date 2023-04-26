@@ -43,9 +43,10 @@ jobs:
           git config --local gc.auto 0
           git add --force .
           git commit -m "Automated deploy: $commit_message" >/dev/null
+      - name: Print Variables
+          run: echo "$pantheon_site_name $pantheon_env"
       - name: Enable maintenance mode
-        run: echo "$pantheon_site_name $pantheon_env"
-        run: terminus drush -y $pantheon_site_name.$pantheon_env sset system.maintenance_mode 1
+          run: terminus drush -y $pantheon_site_name.$pantheon_env sset system.maintenance_mode 1
 
       #      - name: Clone database and files from Live
       #        run: terminus env:clone-content -y $pantheon_site_name.live $pantheon_env
