@@ -31,6 +31,7 @@ jobs:
       env:
         pantheon_repo: '${{ secrets.PANTHEON_REPO }}'
       run: |
+        echo $pantheon_repo
         echo "Git Committer Email ${{ github.event.pusher.email }}"
         echo "Github Committer Name $GITHUB_ACTOR" 
         echo "Triggering Branch $GITHUB_REF_NAME"
