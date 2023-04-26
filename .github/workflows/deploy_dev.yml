@@ -1,35 +1,30 @@
-name: Deploy to Dev
-
+name: Deploy Master to Pantheon
 on:
   push:
     branches:
       - 'main'
-
-env:
-  php_version: '8.0'
-  pantheon_env: 'dev'
-  pantheon_repo: ${{ secrets.PANTHEON_REPO }}
-  pantheon_site_name: ${{ secrets.PANTHEON_SITE_NAME }}
-
 jobs:
-  deploy:
-    name: Deploy to Pantheon Dev
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4.1
-
-      - name: Place SSH key
-        uses: shimataro/ssh-key-action@6f350ca8484d8d55c2e361e74d17e638dabe713a # v2.1.0.0
-        with:
-          key: ${{ secrets.PANTHEON_SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-
-      - name: Push code to Pantheon Dev
-        run: |
-          git remote add pantheon $pantheon_repo
-          git push --force pantheon HEAD:master
-      # There is no easy way to know when the code has actually synced to the Pantheon environment so we can't reliably
-      # run Drush commands immediately after pushing code. Thus, we run database updates, import config, and disable
-      # maintenance mode using Pantheon's Quicksilver scripting (see web/private/quicksilver/sync_code.php referenced by
-      # pantheon.yml).
+    - uses: actions/checkout@v1
+    - uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.PANTHEON_SSH_KEY }}
+        config: ${{ secrets.SSH_CONFIG }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - name: Installing Terminus
+      uses: kopepasah/setup-pantheon-terminus@master
+      with:
+        pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
+    - name: deployer
+      env:
+        pantheon_repo: '${{ secrets.PANTHEON_REPO }}'
+        pantheon_site_name: '${{ secrets.PANTHEON_SITE_NAME }}'
+      run: |
+        echo ${{ secrets.KNOWN_HOSTS }}
+        git remote add pantheon $pantheon_repo
+        git push pantheon HEAD:master
+        commit_message=$(git log -1 --pretty=%B)
+        terminus env:deploy $pantheon_site_name.test --note="Automated deploy: $commit_message"
+        terminus env:deploy $pantheon_site_name.live --note="Automated deploy: $commit_message"
