@@ -27,10 +27,6 @@ on:
         type: boolean
         default: true
         description: Clear target environment cache
-      slack_alert:
-        type: boolean
-        default: true
-        description: Alert Slack
 jobs:
   deploy:
     uses: lastcallmedia/github-actions/.github/workflows/terminus-safe-deploy.yml@main
