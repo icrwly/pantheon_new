@@ -23,9 +23,9 @@ jobs:
         pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
 
     - name: Use Node.js 14.
-    #  uses: actions/setup-node@v3
-    #  with:
-    #    node-version: 14.19.0
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14.19.0
 
     - name: Deployer (Git add,commit,push)
       env:
