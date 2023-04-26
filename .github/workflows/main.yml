@@ -2,7 +2,7 @@ name: Deploy to Pantheon
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
       - 'fe-build'
 jobs:
   build:
@@ -21,7 +21,12 @@ jobs:
       uses: pantheon-systems/terminus-github-actions@main
       with:
         pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
-        
+
+    - name: Use Node.js 14.
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14.19.0
+
     - name: Deployer (Git add,commit,push)
       env:
         pantheon_repo: '${{ secrets.PANTHEON_REPO }}'
@@ -30,8 +35,8 @@ jobs:
         echo "Github Committer Name $GITHUB_ACTOR" 
         echo "Triggering Branch $GITHUB_REF_NAME"
         git remote add pantheon $pantheon_repo
-       # git config --global user.email "ian.crowley@pantheon.io"
-       # git config --global user.name "Github Actions"
-       # git add .
-      #  git diff-index --quiet HEAD || git commit -q -m 'Build assets for dev.'
-     #   git push pantheon HEAD:$GITHUB_REF_NAME
+        git config --global user.email "ian.crowley@pantheon.io"
+        git config --global user.name "Github Actions"
+        git add .
+        git diff-index --quiet HEAD || git commit -q -m 'Build assets for dev.'
+        git push pantheon HEAD:$GITHUB_REF_NAME
