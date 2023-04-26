@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2.3.4.1
 
       - name: Place SSH key
-        uses: shimataro/ssh-key-action@6f350ca8484d8d55c2e361e74d17e638dabe713a # v2.1.0
+        uses: shimataro/ssh-key-action@6f350ca8484d8d55c2e361e74d17e638dabe713a # v2.1.0.0
         with:
           key: ${{ secrets.PANTHEON_SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
