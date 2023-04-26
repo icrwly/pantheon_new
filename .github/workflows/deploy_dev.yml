@@ -30,3 +30,36 @@ jobs:
         with:
           pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
           terminus-version: 3.1.2
+      - name: Prepare code for deployment
+        run: |
+          git config --global user.email "ipcrowley@yahoo.com"
+          git config --global user.name "ipcrowley"
+          commit_message=$(git log -1 --pretty=%B)
+          rm -rf .git
+          rm -rf .github
+          rm -rf scripts
+          rm -rf web/core/*.txt
+          git init
+          git config --local gc.auto 0
+          git add --force .
+          git commit -m "Automated deploy: $commit_message" >/dev/null
+      - name: Enable maintenance mode
+        run: terminus drush -y $pantheon_site_name.$pantheon_env sset system.maintenance_mode 1
+
+      #      - name: Clone database and files from Live
+      #        run: terminus env:clone-content -y $pantheon_site_name.live $pantheon_env
+
+      - name: Clone database and files from Test
+        run: terminus env:clone-content -y $pantheon_site_name.test $pantheon_env
+
+      - name: Enable maintenance mode again
+        run: terminus drush -y $pantheon_site_name.$pantheon_env sset system.maintenance_mode 1
+
+      - name: Push code to Pantheon Dev
+        run: |
+          git remote add pantheon $pantheon_repo
+          git push --force pantheon HEAD:master
+      # There is no easy way to know when the code has actually synced to the Pantheon environment so we can't reliably
+      # run Drush commands immediately after pushing code. Thus, we run database updates, import config, and disable
+      # maintenance mode using Pantheon's Quicksilver scripting (see web/private/quicksilver/sync_code.php referenced by
+      # pantheon.yml).
