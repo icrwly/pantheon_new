@@ -29,7 +29,7 @@ jobs:
         uses: pantheon-systems/terminus-github-actions@main
         with:
           pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
-          terminus-version: 2.6.5
+          terminus-version: 3.1.2
           
       - name: Prepare code for deployment
         run: |
