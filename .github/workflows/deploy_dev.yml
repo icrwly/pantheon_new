@@ -25,12 +25,10 @@ jobs:
           key: ${{ secrets.PANTHEON_SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      - name: Install Terminus
-        # We use cgr to avoid dependency conflicts
-        run: |
-          composer global require consolidation/cgr:^2.0.5
-          cgr pantheon-systems/terminus:^2.6.1
-          terminus auth:login --machine-token=${{ secrets.PANTHEON_MACHINE_TOKEN }}
+      - name: Installing Terminus
+        uses: kopepasah/setup-pantheon-terminus@master
+        with:
+          pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
       - name: Prepare code for deployment
         run: |
           git config --global user.email "ian.crowley@pantheon.io"
