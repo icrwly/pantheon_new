@@ -32,7 +32,7 @@ jobs:
       - name: Prepare code for deployment
         run: |
           git config --global user.email "ian.crowley@pantheon.io"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "ian.crowley@getpantheon.com"
           commit_message=$(git log -1 --pretty=%B)
           rm -rf .git
           rm -rf .github
