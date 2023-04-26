@@ -1,30 +1,29 @@
-name: Deploy Master to Pantheon
-on:
-  push:
-    branches:
-      - 'main'
+name: Pantheon Sync
+
+# This action pulls the autopilot commits from Pantheon
+# Controls when the action will run. 
+on: workflow_dispatch
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: shimataro/ssh-key-action@v2
+    - uses: actions/checkout@v2
+    - name: Installing PHP
+      uses: shivammathur/setup-php@master
       with:
-        key: ${{ secrets.PANTHEON_SSH_KEY }}
+        php-version: '7.4'
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
         config: ${{ secrets.SSH_CONFIG }}
+        key: ${{ secrets.SSH_KEY_PABLO_LINUX }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
-    - name: Installing Terminus
-      uses: kopepasah/setup-pantheon-terminus@master
-      with:
-        pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
-    - name: deployer
-      env:
-        pantheon_repo: '${{ secrets.PANTHEON_REPO }}'
-        pantheon_site_name: '${{ secrets.PANTHEON_SITE_NAME }}'
+    - name: Push Code
+      if: success()
       run: |
-        echo ${{ secrets.KNOWN_HOSTS }}
-        git remote add pantheon $pantheon_repo
-        git push pantheon HEAD:master
-        commit_message=$(git log -1 --pretty=%B)
-        terminus env:deploy $pantheon_site_name.test --note="Automated deploy: $commit_message"
-        terminus env:deploy $pantheon_site_name.live --note="Automated deploy: $commit_message"
+        git config --global user.name 'icrwly' 
+        git config --global user.email 'ipcrowley@yahoo.com'
+        git remote add pantheon ${{ secrets.PANTHEON_REPO }}
+        git pull pantheon HEAD:master
+        git push origin master --force
