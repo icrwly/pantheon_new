@@ -14,7 +14,7 @@ jobs:
       uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ secrets.PANTHEON_SSH_KEY }}
-        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        known_hosts: 'placeholder' # to make it work
         
     # Install Terminus.
     - name: Install Terminus
