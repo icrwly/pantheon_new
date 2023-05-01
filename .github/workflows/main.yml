@@ -41,4 +41,4 @@ jobs:
         git config --global user.name "Github Actions"
         git add .
         git diff-index --quiet HEAD || git commit -q -m 'Build assets for dev.'
-        git push pantheon HEAD:$GITHUB_REF_NAME
+        git push -f pantheon HEAD:$GITHUB_REF_NAME
